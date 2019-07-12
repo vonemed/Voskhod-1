@@ -17,38 +17,31 @@ if(MSVC)
   add_definitions(-DSDL_MAIN_HANDLED)
 endif()
 
-if(MSVC)
-  target_link_libraries(voskhod-1
-    SDL2 glew32 opengl32
-  )
-else()
-  target_link_libraries(voskhod-1
-    SDL2 GLU GLEW GL
-  )
-endif()
-
-include_directories(
-	src
-)	
-
 add_executable(game
 	src/game/main.cpp
 )
 
-add_library(voskhod-1
-	src/Voskhod-1/Core.cpp
-)
 
 if(MSVC)
-  add_custom_command(TARGET triangle POST_BUILD
+  target_link_libraries(game
+    SDL2 glew32 opengl32
+  )
+else()
+  target_link_libraries(game
+    SDL2 GLU GLEW GL
+  )
+endif()
+
+if(MSVC)
+  add_custom_command(TARGET game POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
       "${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/SDL2/bin/SDL2.dll"
-      "$<TARGET_FILE_DIR:triangle>"
+      "$<TARGET_FILE_DIR:game>"
   )
 
-  add_custom_command(TARGET triangle POST_BUILD
+  add_custom_command(TARGET game POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
       "${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/glew/bin/glew32.dll"
-      "$<TARGET_FILE_DIR:triangle>"
+      "$<TARGET_FILE_DIR:game>"
   )
 endif()
