@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <GL/glew.h>
 
 #include <exception>
 
@@ -7,14 +8,14 @@
 
 int main(int argc, char *argv[])
 {
-  if(SDL_Init(SDL_INIT_VIDEO) < 0)
+  if(SDL_Init(SDL_INIT_VIDEO) < 0) // If initialization of SDL failed throw an exception
   {
     throw std::exception();
   }
 
-  SDL_Window *window = SDL_CreateWindow("Triangle",
+  SDL_Window *window = SDL_CreateWindow("Window",
     SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-    WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE);
+    WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 
   bool quit = false;
 
