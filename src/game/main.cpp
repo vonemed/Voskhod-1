@@ -17,11 +17,26 @@ int main(int argc, char *argv[])
     SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
     WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 
+  // OpenGL rendering context for created window
+  if (!SDL_GL_CreateContext(window))
+  {
+	  throw std::exception();	
+  }
+
+  if (glewInit() != GLEW_OK)
+  {
+	  throw std::exception();
+  }
+
   bool quit = false;
 
   while(!quit)
   {
     SDL_Event event = {0};
+
+	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+	SDL_GL_SwapWindow(window); // To eliminate flicker
 
     while(SDL_PollEvent(&event))
     {
