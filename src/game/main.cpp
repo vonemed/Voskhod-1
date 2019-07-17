@@ -1,6 +1,6 @@
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
-
+// OPENGEL
 #include <exception>
 
 #define WINDOW_WIDTH 640
