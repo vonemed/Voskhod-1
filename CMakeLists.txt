@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 2.6)
-project(VOSKHOD-1)
+project(VOSKHOD)
+
+include_directories(
+     contrib
+     src
+)
 
 if(MSVC)
   include_directories(
@@ -10,6 +15,15 @@ if(MSVC)
   link_directories(
     ${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/SDL2/lib
     ${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/glew/lib
+  )
+else()
+  include_directories(
+    /usr/X11R6/include
+    /usr/local/include
+  )
+  link_directories(
+    /usr/X11R6/lib
+    /usr/local/lib
   )
 endif()
 
@@ -22,6 +36,12 @@ add_executable(game
 )
 
 
+add_library(Voskhod
+	src/Voskhod/Core.cpp
+	src/Voskhod/Entity.cpp
+)
+
+
 if(MSVC)
   target_link_libraries(game
     SDL2 glew32 opengl32
@@ -31,6 +51,9 @@ else()
     SDL2 GLU GLEW GL
   )
 endif()
+
+target_link_libraries(game Voskhod)
+
 
 if(MSVC)
   add_custom_command(TARGET game POST_BUILD
