@@ -37,45 +37,47 @@ int main(int argc, char *argv[])
   };
 
   // GLuint - just a typedef of unsigned int
-  GLuint positionsVboId = 0;
+  GLuint VBO = 0;
 
   // Creating a new VBO on the GPU and binding it
 
-  // Creating
-  glGenBuffers(1, &positionsVboId);
+  // Generating a number of buffer object names and storing it in array 
+  glGenBuffers(1, &VBO); // Basically creating buffer object and allocating memory for it
 
-  if (!positionsVboId)
+  if (!VBO) // If storing process wasn't successful, throw an exception
   {
 	  throw std::exception();
   }
 
-  // Binding
-  glBindBuffer(GL_ARRAY_BUFFER, positionsVboId);
+  // Binding (making object currrent)
+  glBindBuffer(GL_ARRAY_BUFFER, VBO); // Making buffer active 
 
   // Uploading a copy of the data from memory into the new VBO
+  // Buffer object for vertex attribute data, size of positions, 
+  // pointer to a memory, flags about how data store will be used
   glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
 
   // Reset the state
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindBuffer(GL_ARRAY_BUFFER, 0); // Releases the buffer
 
-  GLuint vaoId = 0;
+  GLuint VAOs = 0; // Number of vertex array objects
 
   // Creating a new VAO on the GPU and binding it
-  glGenVertexArrays(1, &vaoId);
+  glGenVertexArrays(1, &VAOs); // Generates 1 VAO and storing it in array vaoId
 
-  if (!vaoId)
+  if (!VAOs)
   {
 	  throw std::exception();
   }
 
-  glBindVertexArray(vaoId);
+  glBindVertexArray(VAOs);
 
   // Bind the position VBO, assign it to position 0 on the bound VAO
   // and flag it to be used
-  glBindBuffer(GL_ARRAY_BUFFER, positionsVboId);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
-	  3 * sizeof(GLfloat), (void *)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, // The location value for respectiv shader, number of values for each vertex, type of value, disabling normalizing, 
+	  3 * sizeof(GLfloat), (void *)0); // offset between consecutive elements in array, offset from start of buffer object
 
   glEnableVertexAttribArray(0);
 
@@ -93,13 +95,13 @@ int main(int argc, char *argv[])
 
   // Create a new vertex shader, attach source code, compile it and
   // check for errors.
-  GLuint vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
-  glShaderSource(vertexShaderId, 1, &vertexShaderSrc, NULL);
-  glCompileShader(vertexShaderId);
+  GLuint vertexShaderId = glCreateShader(GL_VERTEX_SHADER); // Creating a new shader object with a type of vertex shader
+  glShaderSource(vertexShaderId, 1, &vertexShaderSrc, NULL);  // To associate a source code with shader
+  glCompileShader(vertexShaderId); // Compiling shader
   GLint success = 0;
   glGetShaderiv(vertexShaderId, GL_COMPILE_STATUS, &success);
 
-  if (!success)
+  if (!success) // If compilation of a shader wasn't succesful, throw an exception
   {
 	  throw std::exception();
   }
@@ -150,7 +152,7 @@ int main(int argc, char *argv[])
 
   // Instruct OpenGL to use our shader program and our VAO
   glUseProgram(programId);
-  glBindVertexArray(vaoId);
+  glBindVertexArray(VAOs);
  
   bool quit = false;
 
