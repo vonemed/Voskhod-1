@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
   // and flag it to be used
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, // The location value for respectiv shader, number of values for each vertex, type of value, disabling normalizing, 
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, // The location value for respective shader, number of values for each vertex, type of value, disabling normalizing, 
 	  3 * sizeof(GLfloat), (void *)0); // offset between consecutive elements in array, offset from start of buffer object
 
   glEnableVertexAttribArray(0);
